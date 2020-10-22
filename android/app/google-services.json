@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "916973420209",
+    "firebase_url": "https://techno-8158a.firebaseio.com",
+    "project_id": "techno-8158a",
+    "storage_bucket": "techno-8158a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:916973420209:android:390d5cb351e038b284ac90",
+        "android_client_info": {
+          "package_name": "com.example.flutter_auth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "916973420209-r9qprj1o53gm9n1vn2enjkcr4ig1l1k1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXPmF8J8wx97c8YuK8pC5rz_zcfcwa1fM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "916973420209-r9qprj1o53gm9n1vn2enjkcr4ig1l1k1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

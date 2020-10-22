@@ -1,0 +1,94 @@
+pragma solidity 0.5.10;
+
+contract VotingSystem {
+mapping (address => bool) public voters;
+mapping (address => bool) public voted;
+
+
+uint256 public totalVoterRegistered;
+uint256 public totalVoted;
+uint256 public endOfVoting;
+
+uint16 constant votingPeriod = 1;
+
+bool public isVotingClosed;
+
+address public owner;
+
+constructor () public {
+    owner = msg.sender;
+    endOfVoting = now + votingPeriod;
+}
+
+modifier onlyContractOwner() {
+    require(owner == msg.sender, 'Not a contract owner');
+    _;
+}
+
+modifier ifVoitingGoing() {
+    require(!isVotingClosed, 'Voting is closed');
+    _;
+}
+
+modifier onlyValidVoter() {
+    require(voters[msg.sender] == true, 'Not a registered voter');
+    _;
+}
+
+function registerVoter(address _voter) public onlyContractOwner() ifVoitingGoing() returns(bool success) {
+    if (voters[_voter] == false) {
+        voters[_voter] = true;
+        totalVoterRegistered++;
+    }
+    return true;
+}
+
+function unregisterVoter(address _voter) public onlyContractOwner() ifVoitingGoing() returns(bool success) {
+    if(voters[_voter] == true) {
+        voters[_voter] = false;
+        totalVoterRegistered--;
+    }
+    return true;
+}
+
+function registerVoters(address[] memory _voters) public onlyContractOwner() ifVoitingGoing() returns(bool success) {
+    uint256 newRegisteredCount;
+
+    for (uint256 i = 0; i &lt; _voters.length; i++) {
+        if (voters[_voters[i]] == false) {
+            voters[_voters[i]] = true;
+            newRegisteredCount++;
+        }
+    }
+    totalVoterRegistered += newRegisteredCount;
+    return true;
+}
+
+function voteFor() public ifVoitingGoing() onlyValidVoter() returns(bool success) {
+    if(voted[msg.sender] == false) {
+        voted[msg.sender] = true;
+        totalVoted++;
+    }
+    return true;
+}
+
+function voteAgainst() public ifVoitingGoing() onlyValidVoter() returns(bool success) {
+    if(voted[msg.sender] == true) {
+        voted[msg.sender] = false;
+        totalVoted--;
+    }
+    return true;
+}
+
+function endVoting() public ifVoitingGoing() returns(bool success) {
+    require(now &gt;= endOfVoting, 'End date has not come yet');
+    isVotingClosed = true;
+
+    return true;
+}
+
+function getVotingResult() public view returns(uint256 votingResult) {
+    require(isVotingClosed, 'Voting is not ended yet');
+
+    return (100/totalVoterRegistered) * totalVoted;
+}
